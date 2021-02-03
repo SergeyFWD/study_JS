@@ -1,15 +1,28 @@
 'use strict';
 
-let money = +prompt('Ваш месячный доход', 50000);
+let isNumber = function(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+};
+
+let money;
 let income = 'Фриланс';
 let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Квартплата, проездной, кредит');
 let deposit = confirm('Есть ли у вас депозит в банке?');
-let expenses1 = +prompt('Введите обязательную статью расходов?');
-let expenses2 = +prompt('Введите обязательную статью расходов?');
-let expenses3 = +prompt('Во сколько это обойдется?');
-let expenses4 = +prompt('Во сколько это обойдется?');
-let period = 6;
+let expenses1, expenses2;
 let mission = 1000000;
+
+
+
+let start = function() {
+    
+    do{
+       money = prompt('Ваш месячный доход');
+   }
+   while (!isNumber(money));
+};
+
+start();
+
 let showTypeOf = function(data){
     console.log(typeof(data));
 };
@@ -19,12 +32,32 @@ showTypeOf(income);
 showTypeOf(deposit);
 
 let getExpensesMonth = function() {
-    return(expenses1 + expenses2);
+    let sum = 0;
+    let cool = 0;
+    
+    for (let i = 0;  i < 2; i++) {
+
+        if (i === 0) {
+            expenses1 = prompt('Введите обязательную статью расходов?');
+        } else if (i === 1) {
+            expenses2 = prompt('Введите обязательную статью расходов?');
+        } 
+        
+        do {
+            cool = prompt('Во сколько это обойдется?');
+        } while (!isNumber(cool));
+        sum += +cool;
+    }
+    return(sum);
 };
-console.log('Сумма обязательных расходов: ' + getExpensesMonth());
+
+
+let expensesAmount = getExpensesMonth();
+
+console.log('Расходы за месяц: ' + expensesAmount);
 
 let getAccumulatedMonth = function() {
-    return(money - expenses1 - expenses2 - expenses3 - expenses4);
+    return money - expensesAmount;
 };
 
 let accumulatedMonth = getAccumulatedMonth();
@@ -32,7 +65,6 @@ let getTargetMonth = function() {
     return(mission / accumulatedMonth);
 }
 
-console.log('Период равен ' + period + ' месяцев');
 console.log('Цель заработать ' + mission + ' рублей');
 console.log(addExpenses.toLowerCase());
 console.log(addExpenses.split(', '));
